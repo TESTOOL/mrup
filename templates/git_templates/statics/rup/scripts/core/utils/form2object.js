@@ -129,10 +129,11 @@
                 
                 while (currentNode)
                 {
-                        if (currentNode.nodeName.match(/INPUT|SELECT|TEXTAREA|HIDDEN/i) || jQuery(currentNode).is("[ruptype='tree']")){
+                        if (currentNode.nodeName.match(/INPUT|SELECT|TEXTAREA|HIDDEN/i))
+                        {
                                 var fieldValue = getFieldValue(currentNode);
                                 
-                                if ((jQuery(currentNode).is("select") && currentNode.multiple) || jQuery(currentNode).is("[ruptype='tree']")){
+                                if (jQuery(currentNode).is("select") && currentNode.multiple){
                             		var nameParts = jQuery(currentNode).attr("name").split(".");
                             		name = nameParts.length>1?nameParts[nameParts.length-2]:nameParts[0];
                             	}else{

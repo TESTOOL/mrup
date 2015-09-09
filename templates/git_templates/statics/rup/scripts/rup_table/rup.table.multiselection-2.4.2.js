@@ -112,7 +112,7 @@
 					var multiselectionObj={}, tmpLastSearch;
 					
 					function getLastSearchStr(postData){
-						return postData.rows+postData.sidx+postData.sord+postData.filter!==undefined?jQuery.param(jQuery.extend({}, postData.filter, {rows:postData.rows, sidx: postData.sidx, sord: postData.sord})):"";
+						return postData.rows+postData.sidx+postData.sord+postData.filter!==undefined?jQuery.param(postData.filter):"";
 					}
 					
 					tmpLastSearch = $self.data("tmp.lastSearch");
@@ -149,8 +149,25 @@
 					
 					$self.triggerHandler("jqGridSelectRow.rupTable.multiselection", [selectedRows,status]);
 					
+//					if ($self._hasPageSelectedElements(page)){
+//						$self.rup_table("highlightFirstEditableRow");
+//					}
 					return false;
 				}
+//				,
+//				"rupTable_searchNavigation_deselect.multiselection" : function(events, rowId){
+//					var page = parseInt($self.rup_table("getGridParam", "page"),10);
+//
+//					if (settings.multiselection.selectedAll===true){
+//						if (jQuery.inArray(rowId, settings.multiselection.deselectedRowsPerPage[page]===-1)){
+//							return false;
+//						}
+//					}else{
+//						if (jQuery.inArray(rowId, settings.multiselection.selectedRowsPerPage[page]!==-1)){
+//							return false;
+//						}
+//					}
+//				}
 			});
 			
 		},
@@ -189,8 +206,7 @@
 						$self.trigger("reloadGrid",[{page: newPage}]);
 						$self.on("jqGridAfterLoadComplete.multiselection.editRow",function(event,data){
 							var nextPagePos = jQuery.proxy(jQuery.jgrid.getCurrPos, $self[0])(),
-							//newIndexPos = nextPagePos[1][$self._getSelectedLinesOfPage(newPage)[0]-1];
-							newIndexPos = $self.getActiveRowId();
+							newIndexPos = nextPagePos[1][$self._getSelectedLinesOfPage(newPage)[0]-1];
 							$self.jqGrid('editGridRow', newIndexPos, settings.editOptions);
 							$self.off("jqGridAfterLoadComplete.multiselection.editRow");
 						});
@@ -529,7 +545,7 @@
 					selectedRows = settings.multiselection.selectedRowsPerPage[page],
 					deselectedRows = settings.multiselection.deselectedRowsPerPage[page] || [],
 					reorderedRow, reorderedRowPage, reorderedRowLine, reorderedRowId,
-					arrayAuxRowsPerPage, arrayAuxLinesPerPage, arrayAuxIds, arrayAuxRows, arrayAuxPages, firstSelectedLine, firstSelectedId, indexAux, idAux;
+					arrayAuxRowsPerPage, arrayAuxLinesPerPage, arrayAuxIds, arrayAuxRows, arrayAuxPages, firstSelectedLine, firstSelectedId, indexAux;
 										
 					/*
 					 * REORDENAR LA SELECCION
@@ -595,13 +611,7 @@
 
 					// Se gestiona el icono de linea editable
 					if ($self._hasPageSelectedElements(page)){
-						
-						if (settings.multiselection.rowForEditing !==undefined && jQuery.inArray(settings.multiselection.rowForEditing, $self.jqGrid("getDataIDs"))!==-1){
-							$self.rup_table("highlightEditableRow", jQuery($self.jqGrid("getInd",settings.multiselection.rowForEditing,true)), true);
-						}else{
-							$self.rup_table("highlightFirstEditableRow");
-						}
-						
+						$self.rup_table("highlightFirstEditableRow");
 //						firstSelectedLine = $self._getFirstSelectedElementOfPage(page);
 //						firstSelectedId = $self.jqGrid("getDataIDs")[firstSelectedLine-1];
 //						settings.multiselection.rowForEditing=firstSelectedId;
@@ -854,10 +864,8 @@
 			var $self = this, settings = $self.data("settings"), multiselectionObj={};
 			
 			if (!settings.multiselection.selectedAll){
-				if(settings.multiselection.selectedIds!=undefined){
-					if (settings.multiselection.selectedIds.length>0){
-						jQuery.extend(true, multiselectionObj,{"selectedIds":settings.multiselection.selectedIds});
-					}
+				if (settings.multiselection.selectedIds.length>0){
+					jQuery.extend(true, multiselectionObj,{"selectedIds":settings.multiselection.selectedIds});
 				}
 				jQuery.extend(true, multiselectionObj,{
 					"selectedAll":false
@@ -873,6 +881,28 @@
 			
 			return multiselectionObj;
 		},
+//		setSelection: function(selectedRows, status, reorderSelection){
+//			var $self = this, settings = $self.data("settings");
+//			
+//			if (jQuery.isArray(selectedRows)){
+//				for (var i=0;i<selectedRows.length;i++){
+//					$self._processSelectedRow(settings, selectedRows[i], status);
+//				}
+//			}else{
+//				$self._processSelectedRow(settings, selectedRows, status);
+//			}
+//			
+//			// En caso de que se solicite la reordenación de los identificadores seleccionados
+//			if (reorderSelection===true){
+//				$self.on("rupTable_serializeGridData.multiselection.reorderSelection", function(events, postData){
+//					$self.off("rupTable_serializeGridData.multiselection.reorderSelection");
+//				    
+//					jQuery.extend(true, postData, {"multiselection": $self.rup_table("getSelectedIds")});
+//				});
+//			}
+//			
+//			$self.triggerHandler("rupTable_multiselectionUpdated");
+//		},
 		clearHighlightedEditableRows: function(){
 			var $self = this, settings = $self.data("settings");
 			$self.find("td[aria-describedby='"+settings.id+"_rupInfoCol'] span.ui-icon.ui-icon-pencil").removeClass("ui-icon-pencil");

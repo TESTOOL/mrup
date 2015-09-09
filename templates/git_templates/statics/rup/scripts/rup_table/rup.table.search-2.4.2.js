@@ -108,43 +108,56 @@
 						cellColModel = colModel[i];
 						searchRupType = (cellColModel.searchoptions!==undefined && cellColModel.searchoptions.rupType!==undefined)?cellColModel.searchoptions.rupType:cellColModel.rupType;
 						
-						colModelName = cellColModel.name;
-						$elem = $("[name='"+colModelName+"']",$searchRow);
-						// Se añade el title de los elementos de acuerdo al colname
-						$elem.attr({
-							"title": props.colNames[i],
-							"class": "editable customelement"
-						}).removeAttr("readOnly");
-				
-						// En caso de tratarse de un componente rup, se inicializa de acuerdo a la configuracón especificada en el colModel
-						if(searchRupType!==undefined) {
-							searchEditOptions = cellColModel.searchoptions || cellColModel.editoptions;
-							
-							/*
-							 * PRE Configuración de los componentes RUP
-							 */ 
-							switch(searchRupType){
-							case "combo":
-								searchEditOptions = $.extend({},{menuWidth:$elem.width()}, searchEditOptions, {width:"97%"});
-								break;
+//						if(cellColModel.editable===true){
+							colModelName = cellColModel.name;
+							$elem = $("[name='"+colModelName+"']",$searchRow);
+							// Se añade el title de los elementos de acuerdo al colname
+							$elem.attr({
+								"title": props.colNames[i],
+								"class": "editable customelement"
+							}).removeAttr("readOnly");
+					
+							// En caso de tratarse de un componente rup, se inicializa de acuerdo a la configuracón especificada en el colModel
+							if(searchRupType!==undefined) {
+								searchEditOptions = cellColModel.searchoptions || cellColModel.editoptions;
+								
+								/*
+								 * PRE Configuración de los componentes RUP
+								 */ 
+								switch(searchRupType){
+								case "combo":
+									searchEditOptions = $.extend({},{menuWidth:$elem.width()}, searchEditOptions, {width:"97%"});
+									break;
+								}
+								
+								// Invocación al componente RUP
+								$elem["rup_"+searchRupType](searchEditOptions);
+								
+								/*
+								 * POST Configuración de los componentes RUP
+								 */
+								switch(searchRupType){
+								case "date":
+									// TODO: Aplicarlo con estilos
+									$elem.css("width","86%");
+									break;
+								}
 							}
-							
-							// Invocación al componente RUP
-							$elem["rup_"+searchRupType](searchEditOptions);
-							
-							/*
-							 * POST Configuración de los componentes RUP
-							 */
-							switch(searchRupType){
-							case "date":
-								// TODO: Aplicarlo con estilos
-								$elem.css("width","86%");
-								break;
-							}
-						}
+//						}
 					});
 					
 				}
+//				,
+//				"jqGridLoadComplete.rupTable.search.clear":function(){
+//				},
+//				"jqGridAddEditAfterSubmit.rupTable.search":function(){
+//					
+//				}
+//				,
+//				"rupTable_deleteAfterSubmit.rupTable.search": function(event){
+//					$self.rup_table("clearSearch");
+//				}
+//				"rup"
 			});
 			
 		}
@@ -235,6 +248,9 @@
 					"role":"columnheader",
 					"class":"search_row_header ui-th-column ui-th-"+prop.direction
 				}), elc, $elc;
+//				$searchCol = jQuery("<div>").attr({
+//					"style":"position:relative;height:100%;padding-right:0.3em;"
+//				}),
 				
 				if(colM.hidden===true) { 
 					$searchHeader.css("display","none");
@@ -273,6 +289,7 @@
 				
 				$self.on({
 					"rupTable_beforeSearch.search.validate": function(){
+//						filterSettings.$filterContainer.rup_validate("resetForm");
 						return settings.search.$searchForm.valid();
 					}
 				});
@@ -283,6 +300,9 @@
 			$self[0].ftoolbar = true;
 			
 			
+//			this.triggerToolbar = triggerToolbar;
+//			this.clearToolbar = clearToolbar;
+//			this.toggleToolbar = toggleToolbar;
 		},
 		createSearchRow: function(settings){
 			var $self = this, 

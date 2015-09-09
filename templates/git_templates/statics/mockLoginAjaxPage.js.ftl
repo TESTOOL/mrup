@@ -65,6 +65,7 @@ jQuery(document).ready(function () {
 		$('#userCombo').rup_combo("setRupValue",udaMockUserName);
 	}
 
+	debugger;
 	//Se especifica el funcionamiento del botón para que se envíen los datos y para que se almacene la cookie de usuario 
 	$('#loginButtonObject').bind("click",function(){
 		
