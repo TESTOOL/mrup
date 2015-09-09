@@ -255,77 +255,75 @@
 				for (var i = json.length; i--; ) {
 					element = json[i];
 					entry = $('<a>');
-					if (element!== undefined){
-						if (element.divider !== null && element.divider !== true){
-							if((element.pathUrl !== undefined) || (element.url !== undefined)){
-								if (element.pathUrl !== undefined){
-									if ((force === true)||(element.forceAbs === true)){
-										objectUrl = $.rup_utils.relToAbsUrl(element.pathUrl); 
-									} else {
-										objectUrl = element.pathUrl;
-									}	
+					if (element.divider !== null && element.divider !== true){
+						if((element.pathUrl !== undefined) || (element.url !== undefined)){
+							if (element.pathUrl !== undefined){
+								if ((force === true)||(element.forceAbs === true)){
+									objectUrl = $.rup_utils.relToAbsUrl(element.pathUrl); 
 								} else {
-									objectUrl = $.rup.CTX_PATH+element.url;
-								}
-								
-								
-								if (element.newWindow !== true){
-									if(element.icon !== undefined){
-										self.prepend($('<li>').append(
-											entry.text($.rup.i18nParse(json_i18n,element.i18nCaption)).attr('href', objectUrl).css('text-decoration', 'underline').append(
-													$('<span>').addClass("ui-icon").addClass(element.icon)	
-											)
-										));
-									} else {
-										self.prepend($('<li>').append(
-											entry.text($.rup.i18nParse(json_i18n,element.i18nCaption)).attr('href', objectUrl).css('text-decoration', 'underline')
-										));
-									}
-								} else {
-									if(element.icon !== undefined){
-										self.prepend($('<li>').append(
-											entry.text($.rup.i18nParse(json_i18n,element.i18nCaption)).attr('href', objectUrl).attr('target',"_blank").css('text-decoration', 'underline').append(
-													$('<span>').addClass("ui-icon").addClass(element.icon)	
-											)
-										));
-									} else {
-										self.prepend($('<li>').append(
-											entry.text($.rup.i18nParse(json_i18n,element.i18nCaption)).attr('href', objectUrl).attr('target',"_blank").css('text-decoration', 'underline')
-										));
-									}
-								}
-								
+									objectUrl = element.pathUrl;
+								}	
 							} else {
-								//Si no tiene enlace es submenu
-								if(element.icon !== undefined){
-									self.prepend($('<li>').append(
-										entry.text($.rup.i18nParse(json_i18n,element.i18nCaption)).css('cursor','default').append($('<span>').addClass("ui-icon").addClass(element.icon))
-									).append($('<ul>').attr("uda-submenu", "true")));
-								} else {
-									self.prepend($('<li>').append(
-										entry.text($.rup.i18nParse(json_i18n,element.i18nCaption)).css('cursor','default')
-									).append($('<ul>').attr("uda-submenu", "true")));
-								}
-								//Obtener el elemento que va a ser el submenu
-								submenu = $("[uda-submenu = 'true']");
-								//Llamada recursiva para añadir subelementos del submenu
-								submenu.append(this._parseJSON(element.submenu, json_i18n, submenu));
-								delete submenu;
+								objectUrl = $.rup.CTX_PATH+element.url;
 							}
 							
-							if (element.disabled === true){
-								entry.parent().addClass("ui-state-disabled");
-							}
-						} else {
-							if (element.i18nCaption === undefined){
-								self.prepend($('<li>').addClass("ui-widget-content ui-menu-divider"));
+							
+							if (element.newWindow !== true){
+								if(element.icon !== undefined){
+									self.prepend($('<li>').append(
+										entry.text($.rup.i18nParse(json_i18n,element.i18nCaption)).attr('href', objectUrl).css('text-decoration', 'underline').append(
+												$('<span>').addClass("ui-icon").addClass(element.icon)	
+										)
+									));
+								} else {
+									self.prepend($('<li>').append(
+										entry.text($.rup.i18nParse(json_i18n,element.i18nCaption)).attr('href', objectUrl).css('text-decoration', 'underline')
+									));
+								}
 							} else {
-								self.prepend($('<li>').append($('<strong>').text($.rup.i18nParse(json_i18n,element.i18nCaption))));
+								if(element.icon !== undefined){
+									self.prepend($('<li>').append(
+										entry.text($.rup.i18nParse(json_i18n,element.i18nCaption)).attr('href', objectUrl).attr('target',"_blank").css('text-decoration', 'underline').append(
+												$('<span>').addClass("ui-icon").addClass(element.icon)	
+										)
+									));
+								} else {
+									self.prepend($('<li>').append(
+										entry.text($.rup.i18nParse(json_i18n,element.i18nCaption)).attr('href', objectUrl).attr('target',"_blank").css('text-decoration', 'underline')
+									));
+								}
 							}
+							
+						} else {
+							//Si no tiene enlace es submenu
+							if(element.icon !== undefined){
+								self.prepend($('<li>').append(
+									entry.text($.rup.i18nParse(json_i18n,element.i18nCaption)).css('cursor','default').append($('<span>').addClass("ui-icon").addClass(element.icon))
+								).append($('<ul>').attr("uda-submenu", "true")));
+							} else {
+								self.prepend($('<li>').append(
+									entry.text($.rup.i18nParse(json_i18n,element.i18nCaption)).css('cursor','default')
+								).append($('<ul>').attr("uda-submenu", "true")));
+							}
+							//Obtener el elemento que va a ser el submenu
+							submenu = $("[uda-submenu = 'true']");
+							//Llamada recursiva para añadir subelementos del submenu
+							submenu.append(this._parseJSON(element.submenu, json_i18n, submenu));
+							delete submenu;
+						}
+						
+						if (element.disabled === true){
+							entry.parent().addClass("ui-state-disabled");
+						}
+					} else {
+						if (element.i18nCaption === undefined){
+							self.prepend($('<li>').addClass("ui-widget-content ui-menu-divider"));
+						} else {
+							self.prepend($('<li>').append($('<strong>').text($.rup.i18nParse(json_i18n,element.i18nCaption))));
 						}
 					}
-					delete element;
 				}
+				delete element;
 			}
 		});
 		

@@ -121,7 +121,7 @@
 					//Activar TREEGRID
 					$self[0].p.treeGrid = true; //(avoid default feature)
 				},
-				"jqGridLoadComplete.rupTable.jerarquia": function(event, data){
+				"jqGridLoadComplete.rupTable.jerarquia": function(data){
 					//Array de elementos contraidos
 					var collapsedNodes = jQuery($self).data("tree"),
 						collapsedNodes_length = collapsedNodes.length;
@@ -250,16 +250,17 @@
 		//f(x) del contextMenu de multiselect con jerarquia
 		_getJerarquiaChildren : function ($trigger, key, options) {
 			var $self = this, settings = $self.data("settings"),
-//        		rowData = $self.rup_table("getGridParam","data")[$trigger.parent().index()-1],
-        		rowData = $self.rup_table("getRowData",$trigger.parent().attr("id")),
+        		rowData = $self.rup_table("getGridParam","data")[$trigger.parent().index()-1],
 				ajaxData = {
 					jerarquia:{
 							//tree : {}, //Obviar elementos contraidos 
-							parentId : jQuery.jgrid.getAccessor(rowData,settings.primaryKeyCol),
+							parentId : jQuery.jgrid.getAccessor(rowData,$self.rup_table("getGridParam","localReader").id),
 							child : key.toLowerCase().indexOf("child")!=-1
 					//FIXME: Quitar esto 
 					},
-					filter :$self.rup_table("getFilterParams")
+					filter :{
+						
+					}
         		};
         	jQuery.extend(true, ajaxData, $self.rup_table("getGridParam", "postData")); 
         	var primaryKey = jQuery.isArray(settings.primaryKey)?settings.primaryKey[0]:settings.primaryKey;
@@ -303,7 +304,6 @@
 	// Parámetros de configuración por defecto para la jerarquía.
 	jQuery.fn.rup_table.plugins.jerarquia = {};
 	jQuery.fn.rup_table.plugins.jerarquia.defaults = {
-		treedatatype:'json',
 		formEdit:{
 			addEditOptions:{
 				reloadAfterSubmit : true

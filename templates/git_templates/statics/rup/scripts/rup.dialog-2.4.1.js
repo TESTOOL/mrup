@@ -58,13 +58,14 @@
 	
 	$.fn.rup_dialog("extend",{
 		open : function () {//abre el dialogo y estable el foco en el primer botón.
-			var settings = $.extend({}, $(this).dialog("option")), $overlayEl;
+			
 			//Guardar el elemento que tenía el foco antes de abrir el diálogo
 			$(this).data("focus",$(document.activeElement));
 
 			var docHeight = $(document).height(), docWidth = $(document).width();
 			
 			if ($(this).dialog("option", "ajaxCache") === false){
+				var settings = $.extend({}, $(this).dialog("option"));
 				settings.id = $(this).attr('id');
 				settings.autoOpen = true;
 				this._ajaxLoad(settings);
@@ -74,15 +75,9 @@
 			
 			//Ajuste para portales
 			if($.rup_utils.aplicatioInPortal()){
-				if ($(this).data("dialog").overlay !== null){
-					$overlayEl = $(this).data("dialog").overlay.$el;
-					$(".r01gContainer").append($overlayEl);
-					$overlayEl.css("height",docHeight).css("width",docWidth);
-					
-				}
-				if (settings.position === undefined || settings.position === null){
-					$(this).data("dialog").uiDialog.css("position","absolute").css("top",(docHeight/2)-($('div[aria-labelledby=ui-dialog-title-' + this[0].id + ']').height()/2));
-				}
+				$(".r01gContainer").append($(".ui-widget-overlay"));
+				$(".ui-widget-overlay").css("height",docHeight).css("width",docWidth);
+				$(".ui-dialog").css("position","absolute").css("top",(docHeight/2)-($('div[aria-labelledby=ui-dialog-title-' + this[0].id + ']').height()/2));
 			}
 			
 			$('div[aria-labelledby=ui-dialog-title-' + this[0].id + '] .ui-dialog-buttonpane button:first').focus();

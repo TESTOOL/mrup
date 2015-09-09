@@ -90,6 +90,8 @@
 
 			
 			settings.ondblClickRow = function(rowid, iRow, iCol, e){
+//				debugger;
+//				$self.jqGrid("setSelection", rowid, true);
 				$self.rup_table('editElement', rowid);
 				return false;
 			};
@@ -871,11 +873,7 @@
 								fld[0].defaultChecked = false;
 								vl = $(fld).attr("offval");
 							} else if (fld[0].type && fld[0].type.substr(0,6)=='select') {
-								if (fld.attr("ruptype")==="combo"){
-									fld.rup_combo("reset");
-								}else{
-									fld[0].selectedIndex = 0;
-								}
+								fld[0].selectedIndex = 0;
 							} else {
 								fld.val(vl);
 							}
@@ -977,6 +975,9 @@
 				success: function (xhr, ajaxOptions) {
 					var xhrArray;
 					
+					// Se actualiza el contador de registros
+//					self.rup_table("updateDetailPagination", detailIndex.current, detailIndex.total);
+					
 					if (xhr.id && xhr.id instanceof Object){//estamos en JPA
 						if (xhr.id instanceof Object) {//es que estamos en jpa y traemos una clave compuesta
 							xhr["JPA_ID"] = xhr.id;
@@ -990,13 +991,13 @@
 					rp_ge[$t.p.id]._savedData = $.rup_utils.unnestjson(xhr);
 					rp_ge[$t.p.id]._savedData[settings.id+"_id"]=rowid;
 					$("#id_g",$form).val(rowid);
-				
-				},
-				error: function (xhr, ajaxOptions, thrownError) {
-					settings.$feedback.rup_feedback("option", "delay", null);
-					settings.$feedback.rup_feedback("set", xhr.responseText, "error");
-					settings.$feedback.rup_feedback("option", "delay", 1000);
-				}
+					
+					},
+					error: function (xhr, ajaxOptions, thrownError) {
+						mnt.prop.feedback.rup_feedback("option", "delay", null);
+						mnt.prop.feedback.rup_feedback("set", xhr.responseText, "error");
+						mnt.prop.feedback.rup_feedback("option", "delay", 1000);
+					}
 			}, settings.formEdit.detailOptions.ajaxDetailOptions);
 			
 			ajaxOptions.url+="/"+$self.rup_table("getPkUrl",rowid);

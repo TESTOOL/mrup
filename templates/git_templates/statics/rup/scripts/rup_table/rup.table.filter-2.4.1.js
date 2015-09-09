@@ -368,18 +368,7 @@
 							fieldName= $("[name='" + aux[i].name + "']",searchForm).prev('div').find('label').first().html();
 						} else {
 							//fieldName= $("[name='" + aux[i].name + "']",searchForm).parent().prev('div').html();
-							
-							// Buscamos el label asociado al combo
-							// Primero por id 
-							var $auxField = $("[name='" + aux[i].name + "']",searchForm), $labelField;
-							
-							$labelField = jQuery("[for='"+$auxField.attr("id")+"']");
-							
-							if ($labelField.length>0){
-								fieldName = $labelField.first().text();
-							}else{
-								fieldName= $("[name='" + aux[i].name + "']",searchForm).parent().prev('div').find('label').first().html();
-							}
+							fieldName= $("[name='" + aux[i].name + "']",searchForm).parent().prev('div').find('label').first().html();
 						}
 					}
 					if (fieldName === null || fieldName === undefined){

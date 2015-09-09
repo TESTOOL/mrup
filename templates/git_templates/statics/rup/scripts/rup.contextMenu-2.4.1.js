@@ -74,10 +74,6 @@
 					
 					/* Añadir el estilo para la modificación del estilo del puntero del ratón */
 					$self.addClass("context-menu-cursor");
-					if (jQuery.rup.browser.isIE){
-						$self.css("cursor", settings.msieCursorCss);
-					}
-					
 					
 					/* Adecuar los cssSprites */
 					$.each($(".context-menu-list.context-menu-root"), function(index, elem){
@@ -113,8 +109,7 @@
 	//******************************************************
 	$.fn.rup_contextMenu.defaults = {
 		autoHide: true,
-		showCursor:true,
-		msieCursorCss:"url("+$.rup.RUP+"/basic-theme/cursors/context-menu.cur),default"
+		showCursor:true
 	};	
 	
 })(jQuery);

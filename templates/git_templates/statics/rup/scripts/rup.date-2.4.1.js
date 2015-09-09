@@ -305,17 +305,14 @@
 				        }
 				        if (settings.onClose!==undefined){ settings.onClose(dateText, inst); }
 					};
-					from_settings.onSelect = to_settings.beforeShow = function (selectedDate){
-				        var start = $("#"+settings.from).datetimepicker('getDate'), startDate;
+					from_settings.onSelect = function (selectedDate){
+				        var start = $(this).datetimepicker('getDate');
 				       
-				        startDate = start!==null?new Date(start.getTime()):null;
-				        
-				        $("#"+settings.to).datetimepicker('option', 'minDate', startDate);
+				        $("#"+settings.to).datetimepicker('option', 'minDate', new Date(start.getTime()));
 				        
 				        if (settings.datetimepicker){
-				        	$("#"+settings.to).datetimepicker('option', 'minDateTime', startDate);
+				        	$("#"+settings.to).datetimepicker('option', 'minDateTime', new Date(start.getTime()));
 				        }
-					    
 				        if (settings.onSelect!==undefined){ settings.onSelect(selectedDate);}
 				    };
 				        
@@ -348,17 +345,14 @@
 				        }
 				        if (settings.onClose!==undefined){ settings.onClose(dateText, inst); }
 				    };
-				    to_settings.onSelect = from_settings.beforeShow = function (selectedDate){
-				        var end = $("#"+settings.to).datetimepicker('getDate'), endDate;
+				    to_settings.onSelect = function (selectedDate){
+				        var end = $(this).datetimepicker('getDate');
 				        
-				        endDate = end!==null?new Date(end.getTime()):null;
-				        
-				        $("#"+settings.from).datetimepicker('option', 'maxDate', endDate);
+				        $("#"+settings.from).datetimepicker('option', 'maxDate', new Date(end.getTime()));
 				        
 				        if (settings.datetimepicker){
-				        	$("#"+settings.from).datetimepicker('option', 'maxDateTime',endDate);
+				        	$("#"+settings.from).datetimepicker('option', 'maxDateTime', new Date(end.getTime()));
 				        }
-				        
 				        if (settings.onClose!==undefined){ settings.onSelect(selectedDate); }
 				    };
 				    
