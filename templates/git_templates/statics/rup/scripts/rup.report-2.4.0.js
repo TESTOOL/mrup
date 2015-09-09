@@ -111,7 +111,7 @@
 						//add click
 						$.each(object.buttons, function(index, object){
 							self._checkButton(object, errors);
-							self._configureButton(object, defaultDialog, customDialog, settings);
+							self._configureButton(object, defaultDialog, customDialog);
 						});
 					} else {
 						//BUTTON
@@ -127,7 +127,7 @@
 						}
 						//add click
 						self._checkButton(object, errors);
-						self._configureButton(object, defaultDialog, customDialog, settings);
+						self._configureButton(object, defaultDialog, customDialog);
 					}
 				});
 				
@@ -156,7 +156,7 @@
 				}
 			}
 		},
-		_configureButton: function(button, defaultDialog, customDialog, settings){
+		_configureButton: function(button, defaultDialog, customDialog){
 			var self = this,
 				dialog = {};
 			$.extend(dialog,defaultDialog); //Copiar el dialogo de por defecto
@@ -179,11 +179,7 @@
 					if (button.columns!==undefined){
 						//GridParams
 						var $grid = $($.find("#"+button.columns.grid)[0]);
-						if (jQuery.isFunction(settings.fncGetGridParam)){
-							data = jQuery.proxy(settings.fncGetGridParam, $grid)();
-						}else{
-							data = $grid.jqGrid("getGridParam", "postData");
-						}
+						data = $grid.jqGrid("getGridParam", "postData");
 						data["columns"] = $.toJSON(self._getColumns($grid, button.columns));
 					}
 					
@@ -254,7 +250,7 @@
 					//Lanzar petición
 				    $.fileDownload($.rup_utils.setNoPortalParam(button.url), {
 				    	httpMethod: "POST",
-						data: jQuery.rup_utils.unnestjson(data),
+						data: data,
 				        successCallback: function (url) {
 				        	if (dialog.successCallback!==undefined){
 				        		dialog.successCallback();
@@ -335,7 +331,6 @@
 	//*******************************************************
 	
 	$.rup_report.defaults = {
-		fncGetGridParam:null,
 		dialog: {
 			wait : {
 				title: $.rup.i18nParse($.rup.i18n.base,"rup_report.waitTitle"),

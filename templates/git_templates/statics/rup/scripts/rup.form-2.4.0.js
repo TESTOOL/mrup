@@ -41,17 +41,14 @@
 			$.set_uda_ajax_mode_on();
 			$self.ajaxSubmit(options);
 		},
-		ajaxSubmit:function(argOptions){
-			var $self = this,
-			options = $.extend(true, {}, $.fn.rup_form.defaults, argOptions);
+		ajaxSubmit:function(options){
+			var $self = this;
 			// Actiavamos la gestión de las peticiones AJAX mediante la función $.rup_ajax.
 			$.set_uda_ajax_mode_on();
 			$self.rup_form("configureOptions",options);
 			if (options.formValidationRequired){
 				$self.rup_validate(options.validate);
-				if ($self.valid()){
-					$(this).ajaxSubmit(options);
-				}
+				$self.submit();
 			}else{
 				// Necesario utilizar $(this) para invocar al ajaxSubmit del plugin subyacente
 				$(this).ajaxSubmit(options);
@@ -142,10 +139,6 @@
 		configureOptions:function(settings){
 			var $self = this, hasFileInputs, beforeSendUserEvent, beforeSubmitUserEvent;
 			
-			if (settings.url!==null){
-				$self.attr("action", settings.url);
-			}
-			
 			hasFileInputs = $('input:file', $self).length > 0;
 			
 			if (settings.useJsonIfPossible && !hasFileInputs){
@@ -165,7 +158,7 @@
 				}else if (ret !== "skip"){
 					if(ajaxOptions.contentType.indexOf("application/json")!==-1){
 						var jsonData = $self.rup_form("formToJson");
-						if (settings.multimodel!==null){
+						if (settings.multimodel===true){
 							xhr.setRequestHeader("RUP_MULTI_ENTITY", "true");
 							jsonData["rupEntityMapping"]=settings.multimodel;
 						}
@@ -286,7 +279,7 @@
 	$.fn.rup_form.defaults = {
 			ajaxForm:null,
 			feedback:null,
-			multimodel:null,
+			multimodel:false,
 			useJsonIfPossible:true // En caso de ser posible realizar en envío mediante json se enviarán los datos en este formato.
 	};		
 	

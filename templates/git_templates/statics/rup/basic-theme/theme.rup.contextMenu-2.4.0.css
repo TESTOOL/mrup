@@ -165,7 +165,3 @@
 .context-menu-item.rup-css-sprite{
 	padding: 2px;
 }
-
-.context-menu-cursor{
-	cursor: url(cursors/context-menu.cur),default;
-}

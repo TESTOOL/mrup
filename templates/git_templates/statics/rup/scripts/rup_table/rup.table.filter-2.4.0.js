@@ -202,16 +202,9 @@
 			
 			$self.on({
 				"rupTable_serializeGridData.filter": function(events, postData){
-					var	filterParams = form2object(settings.filter.$filterContainer[0]),
-					queryStrFilterParams = jQuery.param(filterParams),
-					lastFilterParams = $self.data("tmp.lastFilterParams");
+					var	filterParams = form2object(settings.filter.$filterContainer[0]);
 					
 					jQuery.extend(postData, {"filter":filterParams});
-					
-					if (lastFilterParams === undefined || lastFilterParams !== queryStrFilterParams){
-						jQuery.extend(postData, {page:"1"});
-						$self.data("tmp.lastFilterParams", queryStrFilterParams);
-					}
 					
 				}
 			});
@@ -260,8 +253,6 @@
 				if(bfr === undefined) { bfr = true; }
 				if ( bfr === false ) { return; }
 			}
-			
-			$self.rup_table("setGridParam",{page:"1"});
 			
 			$self.trigger("reloadGrid");
 		},
@@ -317,10 +308,10 @@
 		showSearchCriteria: function(){
 			var $self = this, settings = $self.data("settings"),
 			searchString = " ", temp = "", aux, searchForm,
-			field, fieldId, fieldName, fieldValue,
+			field, fieldId, fieldName, fieldValue;
+			
 			aux = settings.filter.$filterContainer.serializeArray();
-			searchForm = settings.filter.$filterContainer,
-			filterMulticombo = new Array();  
+			searchForm = settings.filter.$filterContainer;
 
 			for (var i = 0; i < aux.length; i++) {
 				if (aux[i].value !== "") {

@@ -385,6 +385,7 @@
 				}
 			};
 
+			
 			// Configuracion de los handler de los eventos
 			$self.on({
 				/*
@@ -398,6 +399,7 @@
 				 *  obj: Objeto interno del jqGrid.
 				 */
 				"jqGridSelectRow.rupTable.multiselection": function(event, id, status, obj){
+					
 					var page, firstSelectedId, firstSelectedLine;
 					if (obj!==false){
 						if (obj!==undefined && jQuery(obj.target).hasClass("treeclick")){ return false;}
@@ -430,11 +432,6 @@
 						}
 					}
 				},
-				 "jqGridDblClickRow.rupTable.multiselection": function (event, rowid, iRow, iCol, e){
-					 $self.rup_table("setSelection", rowid, true);
-					 $self.rup_table("clearHighlightedEditableRows");
-					 $self.rup_table("highlightEditableRow", $self.jqGrid("getInd",rowid, true));
-				 },
 				/*
 				 * Capturador del evento jqGridLoadComplete. 
 				 * Se ejecuta una vez se haya completado la carga de la tabla.
@@ -752,7 +749,7 @@
 			
 			return multiselectionObj;
 		},
-		setSelection: function(selectedRows, status, reorderSelection){
+		setSelection: function(selectedRows, status){
 			var $self = this, settings = $self.data("settings");
 			
 			if (jQuery.isArray(selectedRows)){
@@ -761,15 +758,6 @@
 				}
 			}else{
 				$self._processSelectedRow(settings, selectedRows, status);
-			}
-			
-			// En caso de que se solicite la reordenación de los identificadores seleccionados
-			if (reorderSelection===true){
-				$self.on("rupTable_serializeGridData.multiselection.reorderSelection", function(events, postData){
-					$self.off("rupTable_serializeGridData.multiselection.reorderSelection");
-				    
-					jQuery.extend(true, postData, {"multiselection": $self.rup_table("getSelectedIds")});
-				});
 			}
 			
 			$self.triggerHandler("rupTable_multiselectionUpdated");
@@ -1332,6 +1320,15 @@
 			}
 			$self.rup_table("updateSelectedRowNumber");
 		}
+	});
+	
+	//*********************************************************************
+	// MÉTODOS PARA MANTENER LA RETROCOMPATIBILIDAD CON LA API DEL RUP.GRID  
+	//*********************************************************************
+	jQuery.fn.rup_table("extend",{
+		
+		
+		
 	});
 	
 	

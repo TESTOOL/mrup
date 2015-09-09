@@ -62,47 +62,34 @@
 				return;
 			}
 		
-			$fluidBaseLayer = settings.fluid.fluidBaseLayer = settings.fluid.$baseLayer;
+			$fluidBaseLayer = settings.fluid.$baseLayer;
 			
 			// Tratamiento del evento de redimiensionado del diseño líquido de la tabla
 			$self.bind("fluidWidth.resize", function(event, previousWidth, currentWidth){
-				if ($self.is(":visible")){
-					var feedBackPaddingLeft, feedBackPaddingRight, toolbarPaddingLeft, toolbarPaddingRight;
-					$self.setGridWidth(currentWidth);
-					
-					// Se redimensionan las capas contenidas en el mantenimiento
-					$fluidBaseLayer.children().width(currentWidth);
-	//						prop.searchForm.parent().width(currentWidth+3)
-					// Se redimensiona el feedback
-					if (settings.$feedback){
-						feedBackPaddingLeft = parseInt(settings.$feedback.css("padding-left"));
-						feedBackPaddingRight = parseInt(settings.$feedback.css("padding-right"));
-						settings.$feedback.width(currentWidth - (feedBackPaddingLeft+feedBackPaddingRight));
-					}
-					
-					// Se redimensiona la toolbar
-					if (settings.$toolbar){
-						toolbarPaddingLeft = parseInt(settings.$toolbar.css("padding-left"));
-						toolbarPaddingRight = parseInt(settings.$toolbar.css("padding-right"));
-						settings.$toolbar.width(currentWidth - (toolbarPaddingLeft+toolbarPaddingRight));
-						settings.$toolbar.css("width", currentWidth - (toolbarPaddingLeft+toolbarPaddingRight));
-					}
-				}
+				var feedBackPaddingLeft, feedBackPaddingRight, toolbarPaddingLeft, toolbarPaddingRight;
+				$self.setGridWidth(currentWidth);
+				
+				// Se redimensionan las capas contenidas en el mantenimiento
+				$fluidBaseLayer.children().width(currentWidth);
+//						prop.searchForm.parent().width(currentWidth+3)
+				// Se redimensiona el feedback
+				feedBackPaddingLeft = parseInt(settings.$feedback.css("padding-left"));
+				feedBackPaddingRight = parseInt(settings.$feedback.css("padding-right"));
+				settings.$feedback.width(currentWidth - (feedBackPaddingLeft+feedBackPaddingRight));
+				
+				// Se redimensiona la toolbar
+				toolbarPaddingLeft = parseInt(settings.$toolbar.css("padding-left"));
+				toolbarPaddingRight = parseInt(settings.$toolbar.css("padding-right"));
+				settings.$toolbar.width(currentWidth - (toolbarPaddingLeft+toolbarPaddingRight));
+				settings.$toolbar.css("width", currentWidth - (toolbarPaddingLeft+toolbarPaddingRight));
 			});
 
-//			$self.fluidWidth({
-//				fluidBaseLayer:settings.fluid.baseLayer,
-//				minWidth: 100,
-//				maxWidth: 2000,
-//				fluidOffset : 0
-//			});
-			
-			$self.fluidWidth(settings.fluid);
-			
-			$self.on("rupTable_fluidUpdate", function(event){
-				$self.fluidWidth(settings.fluid);
+			$self.fluidWidth({
+				fluidBaseLayer:settings.fluid.baseLayer,
+				minWidth: 100,
+				maxWidth: 2000,
+				fluidOffset : 0
 			});
-			
 		}
 	});
 	
@@ -119,10 +106,7 @@
 	jQuery.fn.rup_table.plugins.fluid = {};
 	jQuery.fn.rup_table.plugins.fluid.defaults = {
 			fluid:{
-				baseLayer:null,
-				minWidth: 100,
-				maxWidth: 2000,
-				fluidOffset : 0
+				baseLayer:null
 			}
 	};
 	
